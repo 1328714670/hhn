@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>挑选员工界面</title>
+        <link type="text/css" rel="stylesheet" media="all" href="../../static/css/styles/global.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="../../static/css/styles/global_color.css" />
+       <style type="text/css">
+            .font3 {
+    color: white;
+    letter-spacing: 0;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+position: relative;
+    right: 790px;
+    top: 8px;
+    font-size: 33px;
+    letter-spacing: 5px;
+            }
+            .font1{
+    color: white;
+    letter-spacing: 0;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+position: relative;
+    right: 790px;
+    top: 8px;
+    font-size: 20px;
+    letter-spacing: 1px;
+            }
+              .font2{
+    color: white;
+    letter-spacing: 0;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+position: relative;
+    font-size: 20px;
+    letter-spacing: 1px;
+            }
+            .font4{
+    color: #9cff04;
+    letter-spacing: 0;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+position: relative;
+    font-size: 20px;
+    letter-spacing: 1px;
+            }
+           a:hover{
+               color: red;
+           }
+        </style>
+    </head>
+    <body>
+{% if status == 0 %}
+    <script>
+    alert('输出未找到该类型的家政人员！')
+    </script>
+{% endif %}
+        <!--Logo区域开始-->
+        <div id="header">
+            <h1 class="font3">欢迎来到家政管理系统</h1>
+            <div><img src="../../static/images/user.png" style="position: relative;
+    top: -42px;"/></div>
+            <div class="font2" style="    position: relative;
+    left: 85px;
+    top: -76px;
+    font-size: 20px;">客户：</div>
+            <div class="font4" style="position: fixed;
+    right: 92px;
+    top: 15px;
+    font-size: 25px;">{{ customer.customer_name }}</div>
+        </div>
+        <!--时间-->
+        <section class="publicTime">
+    <div><img src="../../static/images/time.png"style="position: relative;
+    float: right;
+    width: 25px;
+    top: 2px;
+    right: 435px;"/></div>
+    <span class="font1" id="time"style="position: relative;
+    left: 1031px;
+    top: -3px;"></span>
+
+</section>
+        <!--Logo区域结束-->
+        <!--导航区域开始-->
+        <div id="navi">
+            <ul id="menu">
+                 <li><a href="/customer_information/" style="background: url(../../static/images/8.jpg) no-repeat;"></a></li>
+                <li><a href="/customer_appoint/"style="background: url(../../static/images/1.jpg) no-repeat;"></a></li>
+                <li><a href="/appoint_record/" style="background: url(../../static/images/3.jpg) no-repeat;"></a></li>
+                <li><a href="/change_customer_password/" style="background: url(../../static/images/9.png) no-repeat;"></a></li>
+                <li><a href="/logout/" style="background: url(../../static/images/9.jpg) no-repeat;"></a></li>
+            </ul>
+        </div>
+        <!--导航区域结束-->
+
+              <div id="main">
+            <form action="" method="">
+                <!--查询-->
+             {% csrf_token %}
+                <div class="search_add">
+                    <div>按类型查找：
+                        <select class="select_search"name="type_id">
+                            <option value="0">--请选择--</option>
+                    {% for type in types %}
+                        <option value="{{type.type_id}}">{{type.type_name}}</option>
+                    {% endfor %}
+                        </select>
+                    </div>
+                    <div><input type="submit" value="查询" class="btn_search" formaction="/customer_appoint/"formmethod="post"/></div>
+                </div>
+
+                <script>
+    </script>
+                <!--数据区域：用表格展示数据-->
+                <div id="data">
+                    <table id="datalist">
+                    <tr>
+                <th>类型</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>工作经验</th>
+                <th>薪资要求</th>
+                <th>操作</th>
+                </tr>
+                        {% for worker in workers %}
+                <tr>
+                    <td>{{ worker.worker_type.type_name }}</td><!--因为类型是worker表的外键，所以需要二级引用-->
+                    <td>{{ worker.worker_name }}</td>
+                    <td>{{ worker.worker_sex }}</td>
+                    <td>{{ worker.worker_age }}</td>
+                    <td>{{ worker.worker_experience }}</td>
+                    <td>{{ worker.worker_salary }}</td>
+                <td>
+                    <a href="/worker_detail?worker_id={{ worker.worker_id }}">详情</a>
+                </td>
+                </tr>
+            {% endfor %}
+                </table>
+                </div>
+            </form>
+        </div>
+    <script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/js.js"></script>
+<script src="../../static/js/time.js"></script>
+    </body>
+</html>
